@@ -1,0 +1,25 @@
+[Unit]
+Description=Uplink client portal (portal.uplink.net.au)
+After=network.target notebook.service
+
+[Service]
+Type=simple
+User=portal
+Group=portal
+WorkingDirectory=/opt/client-portal/.next/standalone
+# SESSION_SECRET, FLYLEAF_PORTAL_KEY, FLYLEAF_PORTAL_URL, PORTAL_ORIGIN — root 600.
+EnvironmentFile=/etc/client-portal/env
+Environment=NODE_ENV=production
+Environment=PORT=3110
+Environment=HOSTNAME=127.0.0.1
+ExecStart=/usr/bin/node /opt/client-portal/.next/standalone/server.js
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/client-portal/.next/cache
+
+[Install]
+WantedBy=multi-user.target
